@@ -117,6 +117,26 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
 .pbtn-ghost{color:var(--accent);background:var(--bg)}
 .pbtn:focus-visible,.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0}
+.reviews{background:var(--surface);padding:64px 0 72px;overflow:hidden}
+.r-head{max-width:1200px;margin:0 auto 32px;padding:0 24px}
+.r-head h2{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700}
+.r-head p{color:var(--muted);margin-top:6px}
+.marquee{overflow:hidden;margin-bottom:20px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.mtrack{display:flex;width:max-content}
+.mtrack.rtl{animation:rtl 70s linear infinite}
+.mtrack.ltr{animation:ltr 80s linear infinite}
+.marquee:hover .mtrack{animation-play-state:paused}
+@keyframes rtl{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes ltr{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.review{width:340px;flex:0 0 auto;margin-right:20px;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:18px}
+.rtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;flex-shrink:0}
+.rname{font-weight:600;font-size:.95rem}
+.rrole{color:var(--muted);font-size:.8rem}
+.stars{color:#f5a623;letter-spacing:2px;font-size:1.05rem;margin-bottom:8px}
+.rtext{font-size:.92rem;line-height:1.55;color:var(--text)}
+@media (prefers-reduced-motion:reduce){.marquee{overflow-x:auto}.mtrack{animation:none!important}}
+@media (max-width:640px){.review{width:280px}}
 </style>
 </head>
 <body>
@@ -176,6 +196,54 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
   <div class="tabs" id="tabs" role="group" aria-label="Product categories"></div>
   <div class="grid" id="grid" aria-live="polite"></div>
 </section>
+
+<section class="reviews" id="reviews" aria-labelledby="rtitle">
+  <div class="r-head">
+    <h2 id="rtitle">What our customers say</h2>
+    <p>Feedback from the plants and workshops we have worked with.</p>
+  </div>
+  <div class="marquee"><div class="mtrack rtl" id="row1"></div></div>
+  <div class="marquee"><div class="mtrack ltr" id="row2"></div></div>
+</section>
+<script>
+(function(){
+  var A=[
+    ['Rajesh Kumar','Plant Manager','Our shell and tube exchanger arrived on time and the finish is excellent. It has run without any leak for months.'],
+    ['Anita Sharma','Purchase Head','Clear quotation, fair price and no delays. The storage tanks were exactly to our drawing.'],
+    ['Vikram Singh','Chemical Plant Owner','The reactor vessel with agitator works smoothly. Very happy with the build quality.'],
+    ['Mohit Agarwal','Process Engineer','Good welding and proper testing reports with every vessel. Highly professional team.'],
+    ['Sunita Verma','Dairy Unit Owner','The plate heat exchanger is easy to clean and saves us a lot of time every day.'],
+    ['Arjun Mehta','Maintenance Head','Quick response when we needed a spare part. Support has been really helpful.'],
+    ['Deepak Yadav','Factory Owner','Delivery was on schedule and the packing was safe. Will order again.'],
+    ['Priya Nair','Project Engineer','They understood our requirement quickly and suggested a better design. Great service.'],
+    ['Sanjay Gupta','Boiler Operator','The condenser performs very well. Cooling is better than our old unit.'],
+    ['Neha Kapoor','Operations Manager','Reasonable rates and top quality material. Our go-to supplier now.'],
+    ['Rohit Chauhan','Workshop Owner','The pressure vessel passed inspection in the first attempt. Very satisfied.'],
+    ['Kavita Joshi','Quality Manager','Documents and test certificates were complete and on time. Excellent work.']
+  ],B=[
+    ['Amit Tiwari','Plant Supervisor','The air cooled heat exchanger is quiet and efficient. Installation was simple.'],
+    ['Pooja Reddy','Procurement Lead','Good communication from enquiry to delivery. Everything was as promised.'],
+    ['Harish Patel','Food Plant Owner','The SS tanks are clean, smooth and well made. Perfect for our process.'],
+    ['Manoj Pandey','Site Engineer','The distillation column fits our line perfectly. Strong and neat fabrication.'],
+    ['Ritu Saxena','Production Head','Fast turnaround on our custom order. The team really cares about quality.'],
+    ['Imran Khan','Pharma Unit Manager','High quality stainless steel and a fine finish. Passed our audit easily.'],
+    ['Surbhi Jain','Purchase Manager','Very fair pricing compared to others. Product quality is far better.'],
+    ['Gaurav Mishra','Maintenance Engineer','Easy to maintain and built to last. We have had zero issues so far.'],
+    ['Lakshmi Iyer','Plant Head','Professional from start to finish. The vessel was delivered exactly as designed.'],
+    ['Naveen Bansal','Factory Manager','They helped us choose the right size heat exchanger and saved us money.'],
+    ['Tarun Malhotra','Contractor','Packing, delivery and support were all excellent. Highly recommended.'],
+    ['Shweta Rao','Process Manager','Great build quality and a helpful team. Happy to recommend them.']
+  ],C=['#1f6feb','#e4572e','#0f9d74','#7b3fe4','#d6336c','#e08e0b','#0b7285','#5c7cfa'];
+  function cards(d){
+    var h=d.map(function(r,i){
+      return '<article class="review"><div class="rtop"><div class="avatar" style="background:'+C[(i+r[0].length)%C.length]+'">'+r[0].charAt(0)+'</div><div><div class="rname">'+r[0]+'</div><div class="rrole">'+r[1]+'</div></div></div><div class="stars" role="img" aria-label="5 out of 5 stars">\u2605\u2605\u2605\u2605\u2605</div><p class="rtext">'+r[2]+'</p></article>';
+    }).join('');
+    return h+h;
+  }
+  document.getElementById('row1').innerHTML=cards(A);
+  document.getElementById('row2').innerHTML=cards(B);
+})();
+</script>
 <script>
 (function(){
   var track=document.getElementById('track'),dotsEl=document.getElementById('dots'),hero=document.querySelector('.hero');
