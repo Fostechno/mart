@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Website Header</title>
+<title>Website</title>
 <style>
 :root{
   color-scheme:light; --bg:#ffffff; --surface:#f3f5f7; --text:#14213d; --muted:#5b6575;
-  --accent:#1f6feb; --accent-text:#ffffff; --border:#dde2e8;
+  --accent:#1f6feb; --white:#fff; --accent-text:#ffffff; --border:#dde2e8;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -62,6 +62,38 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
 @media (max-width:420px){
   .logo span.name{display:none}
 }
+.hero{position:relative;overflow:hidden;height:min(78vh,620px);min-height:420px;background:#eef2f7}
+.track{display:flex;height:100%;transition:transform .7s cubic-bezier(.65,0,.35,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;display:flex;align-items:center}
+.slide::before{content:"";position:absolute;inset:0;background:var(--bg)}
+.slide::after{ /* decorative shape */
+  content:"";position:absolute;right:-8%;top:50%;width:min(60vw,560px);aspect-ratio:1;
+  transform:translateY(-50%);border-radius:50%;background:rgba(255,255,255,.14);
+}
+.shape2{position:absolute;right:12%;bottom:-18%;width:min(34vw,300px);aspect-ratio:1;border-radius:32%;background:rgba(255,255,255,.12);transform:rotate(18deg)}
+.content{position:relative;z-index:2;max-width:1200px;width:100%;margin:0 auto;padding:0 72px;color:var(--white)}
+.content h1{font-size:clamp(2rem,5.2vw,3.8rem);line-height:1.08;font-weight:700;max-width:14ch;margin-bottom:16px}
+.content p{font-size:clamp(1rem,1.6vw,1.2rem);max-width:44ch;line-height:1.55;opacity:.92;margin-bottom:28px}
+.btn{display:inline-block;background:#fff;color:var(--text);text-decoration:none;font-weight:600;padding:13px 28px;border-radius:999px}
+.btn:hover{opacity:.92}
+.btn:focus-visible,.arrow:focus-visible,.dot:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+.arrow{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:46px;height:46px;border-radius:50%;
+  border:0;background:rgba(255,255,255,.9);color:var(--text);cursor:pointer;display:grid;place-items:center;
+}
+.arrow:hover{background:#fff}
+.arrow svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5}
+.prev{left:16px}.next{right:16px}
+.dots{position:absolute;bottom:22px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:5}
+.dot{width:11px;height:11px;border-radius:999px;border:0;background:rgba(255,255,255,.5);cursor:pointer;padding:0;transition:width .3s,background .3s}
+.dot[aria-current="true"]{width:32px;background:#fff}
+
+@media (max-width:640px){
+  .content{padding:0 28px}
+  .arrow{display:none}
+}
+@media (prefers-reduced-motion:reduce){.track{transition:none}}
 </style>
 </head>
 <body>
@@ -84,5 +116,66 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
     </nav>
   </div>
 </header>
+<section class="hero" aria-roledescription="carousel" aria-label="Featured offers">
+  <div class="track" id="track">
+    <div class="slide" style="--bg:linear-gradient(120deg,#1f6feb,#4aa3ff)">
+      <span class="shape2"></span>
+      <div class="content"><h1>New arrivals are here</h1><p>Explore the latest products added this week, picked for quality and value.</p><a class="btn" href="#products">Shop now</a></div>
+    </div>
+    <div class="slide" style="--bg:linear-gradient(120deg,#e4572e,#f59e42)">
+      <span class="shape2"></span>
+      <div class="content"><h1>Big savings this season</h1><p>Up to 40% off on selected items. Offer ends soon.</p><a class="btn" href="#offers">View offers</a></div>
+    </div>
+    <div class="slide" style="--bg:linear-gradient(120deg,#0f9d74,#52d1a5)">
+      <span class="shape2"></span>
+      <div class="content"><h1>Quality you can trust</h1><p>Every product is tested and backed by our satisfaction guarantee.</p><a class="btn" href="#about">About us</a></div>
+    </div>
+    <div class="slide" style="--bg:linear-gradient(120deg,#7b3fe4,#b388ff)">
+      <span class="shape2"></span>
+      <div class="content"><h1>Free delivery on every order</h1><p>Fast, safe shipping to your doorstep, with easy returns.</p><a class="btn" href="#delivery">Learn more</a></div>
+    </div>
+    <div class="slide" style="--bg:linear-gradient(120deg,#14213d,#3a4f7a)">
+      <span class="shape2"></span>
+      <div class="content"><h1>Need help choosing?</h1><p>Our team is happy to help you find the right product for your needs.</p><a class="btn" href="#contact">Contact us</a></div>
+    </div>
+  </div>
+
+  <button class="arrow prev" id="prev" aria-label="Previous slide"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="arrow next" id="next" aria-label="Next slide"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="dots" id="dots"></div>
+</section>
+
+<script>
+(function(){
+  var track=document.getElementById('track'),dotsEl=document.getElementById('dots'),hero=document.querySelector('.hero');
+  var n=track.children.length,i=0,timer=null,dots=[];
+  for(var k=0;k<n;k++){(function(k){
+    var b=document.createElement('button');b.className='dot';b.setAttribute('aria-label','Go to slide '+(k+1));
+    b.onclick=function(){go(k);restart()};dotsEl.appendChild(b);dots.push(b);
+  })(k)}
+  function go(x){
+    i=(x+n)%n;track.style.transform='translateX(-'+(i*100)+'%)';
+    dots.forEach(function(d,j){d.setAttribute('aria-current',j===i?'true':'false')});
+  }
+  function start(){stop();timer=setInterval(function(){go(i+1)},5000)}
+  function stop(){if(timer){clearInterval(timer);timer=null}}
+  function restart(){start()}
+  document.getElementById('prev').onclick=function(){go(i-1);restart()};
+  document.getElementById('next').onclick=function(){go(i+1);restart()};
+  hero.addEventListener('mouseenter',stop);hero.addEventListener('mouseleave',start);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowLeft'){go(i-1);restart()}
+    if(e.key==='ArrowRight'){go(i+1);restart()}
+  });
+  var sx=null;
+  hero.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;stop()},{passive:true});
+  hero.addEventListener('touchend',function(e){
+    if(sx!==null){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(dx<0?i+1:i-1);sx=null}
+    start();
+  });
+  go(0);
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)start();
+})();
+</script>
 </body>
 </html>
