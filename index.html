@@ -91,6 +91,32 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
   .arrow{display:none}
 }
 @media (prefers-reduced-motion:reduce){.track{transition:none}}
+
+.products{max-width:1200px;margin:0 auto;padding:56px 24px 72px;scroll-margin-top:90px}
+.p-head{margin-bottom:22px}
+.p-head h2{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700}
+.p-head p{color:var(--muted);margin-top:6px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.tab{border:1px solid var(--border);background:var(--bg);color:var(--text);padding:9px 18px;border-radius:999px;font:inherit;font-size:.9rem;cursor:pointer}
+.tab:hover{border-color:var(--accent)}
+.tab[aria-pressed="true"]{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+.card{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+.card:hover{border-color:var(--accent)}
+.thumb{background:var(--surface);aspect-ratio:10/7;display:grid;place-items:center;position:relative}
+.thumb svg{width:82%;height:auto}
+.badge{position:absolute;top:12px;left:12px;background:var(--accent);color:var(--accent-text);font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:999px}
+.info{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.info h3{font-size:1.05rem}
+.info .spec{color:var(--muted);font-size:.88rem;line-height:1.45;flex:1}
+.price{font-weight:600;margin-top:6px}
+.price small{color:var(--muted);font-weight:400}
+.actions{display:flex;gap:8px;margin-top:10px}
+.pbtn{flex:1;text-align:center;text-decoration:none;font-weight:600;font-size:.9rem;padding:10px 12px;border-radius:10px;border:1px solid var(--accent)}
+.pbtn-primary{background:var(--accent);color:var(--accent-text)}
+.pbtn-ghost{color:var(--accent);background:var(--bg)}
+.pbtn:focus-visible,.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0}
 </style>
 </head>
 <body>
@@ -102,7 +128,7 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
 
     <form class="search" role="search" onsubmit="return false">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input type="search" placeholder="Products search karein..." aria-label="Search">
+      <input type="search" placeholder="Search products" aria-label="Search">
     </form>
 
     <nav class="nav" aria-label="Main">
@@ -141,6 +167,15 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
   <div class="dots" id="dots"></div>
 </section>
 
+
+<section class="products" id="products" aria-labelledby="ptitle">
+  <div class="p-head">
+    <h2 id="ptitle">Our Products</h2>
+    <p>Heat exchangers, tanks, vessels and more, made to your design and sold direct.</p>
+  </div>
+  <div class="tabs" id="tabs" role="group" aria-label="Product categories"></div>
+  <div class="grid" id="grid" aria-live="polite"></div>
+</section>
 <script>
 (function(){
   var track=document.getElementById('track'),dotsEl=document.getElementById('dots'),hero=document.querySelector('.hero');
@@ -171,6 +206,47 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
   });
   go(0);
   if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)start();
+})();
+</script>
+
+<script>
+(function(){
+  var S='fill="#dbe7fb" stroke="#1f6feb" stroke-width="2.5" stroke-linejoin="round"',L='stroke="#1f6feb" stroke-width="2.5" stroke-linecap="round"';
+  var art={
+    shell:'<rect x="30" y="48" width="140" height="48" rx="8" '+S+'/><rect x="16" y="54" width="14" height="36" '+S+'/><rect x="170" y="54" width="14" height="36" '+S+'/><rect x="55" y="30" width="14" height="18" '+S+'/><rect x="130" y="96" width="14" height="18" '+S+'/><path d="M50 118h22M128 118h22" '+L+'/>',
+    plate:'<rect x="44" y="24" width="10" height="92" '+S+'/><rect x="146" y="24" width="10" height="92" '+S+'/><path d="M64 28v84M76 28v84M88 28v84M100 28v84M112 28v84M124 28v84M136 28v84" '+L+'/><path d="M54 40h-26M146 100h26" '+L+'/>',
+    air:'<rect x="28" y="76" width="144" height="30" rx="4" '+S+'/><path d="M44 80v22M58 80v22M72 80v22M86 80v22M100 80v22M114 80v22M128 80v22M142 80v22M156 80v22" '+L+'/><circle cx="100" cy="46" r="24" '+S+'/><path d="M100 28v36M82 46h36" '+L+'/><path d="M60 106v16M140 106v16" '+L+'/>',
+    cond:'<rect x="34" y="40" width="132" height="44" rx="10" '+S+'/><rect x="60" y="24" width="14" height="16" '+S+'/><rect x="126" y="84" width="14" height="18" '+S+'/><path d="M48 84v22M152 84v22M40 106h20M140 106h20" '+L+'/><path d="M50 62h100" '+L+'/>',
+    tank:'<rect x="58" y="34" width="84" height="82" rx="10" '+S+'/><ellipse cx="100" cy="34" rx="42" ry="9" '+S+'/><path d="M70 116v12M130 116v12M146 48v66M152 48v66M146 60h6M146 76h6M146 92h6M146 108h6" '+L+'/>',
+    vessel:'<rect x="26" y="40" width="148" height="56" rx="28" '+S+'/><rect x="92" y="22" width="16" height="18" '+S+'/><path d="M56 96v22M144 96v22M44 118h24M132 118h24" '+L+'/>',
+    reactor:'<rect x="62" y="50" width="76" height="62" '+S+'/><path d="M62 50a38 22 0 0 1 76 0" '+S+'/><path d="M100 20v80M82 100h36" '+L+'/><rect x="88" y="10" width="24" height="12" '+S+'/><path d="M70 112l-8 14M130 112l8 14" '+L+'/>',
+    column:'<rect x="78" y="10" width="44" height="108" rx="8" '+S+'/><path d="M78 30h44M78 50h44M78 70h44M78 90h44" '+L+'/><path d="M122 28h24M54 100h24" '+L+'/><path d="M88 118v10M112 118v10" '+L+'/>'
+  };
+  var P=[
+    {n:'Shell & Tube Heat Exchanger',c:'Heat Exchangers',a:'shell',s:'SS304 / SS316 / carbon steel. TEMA design for process and utility duty.',p:'1,20,000',b:'Popular'},
+    {n:'Plate Heat Exchanger',c:'Heat Exchangers',a:'plate',s:'Compact gasketed unit with SS316 plates. Easy to open and clean.',p:'65,000'},
+    {n:'Air Cooled Heat Exchanger',c:'Heat Exchangers',a:'air',s:'Finned tube bundle with fan. Cools fluids without water.',p:'2,40,000'},
+    {n:'Condenser',c:'Heat Exchangers',a:'cond',s:'Shell and tube condenser for steam and solvent vapour.',p:'1,45,000'},
+    {n:'Storage Tank',c:'Tanks & Vessels',a:'tank',s:'Vertical MS or SS tank, 500 L to 50,000 L. Built to your size.',p:'45,000',b:'Popular'},
+    {n:'Pressure Vessel',c:'Tanks & Vessels',a:'vessel',s:'Horizontal or vertical vessel designed to code for gas and liquid.',p:'1,80,000'},
+    {n:'Reactor Vessel',c:'Reactors & Columns',a:'reactor',s:'Jacketed vessel with agitator, for mixing and reactions.',p:'3,50,000'},
+    {n:'Distillation Column',c:'Reactors & Columns',a:'column',s:'Trayed or packed column for separation. Custom height and diameter.',p:'4,20,000'}
+  ];
+  var cats=['All','Heat Exchangers','Tanks & Vessels','Reactors & Columns'],cat='All',q='';
+  var tabs=document.getElementById('tabs'),grid=document.getElementById('grid'),box=document.querySelector('.search input');
+  function esc(t){return t.replace(/&/g,'&amp;')}
+  function render(){
+    tabs.innerHTML=cats.map(function(c){return '<button class="tab" aria-pressed="'+(c===cat)+'" data-c="'+c+'">'+esc(c)+'</button>'}).join('');
+    var list=P.filter(function(p){return (cat==='All'||p.c===cat)&&(p.n+' '+p.s+' '+p.c).toLowerCase().indexOf(q)>-1});
+    grid.innerHTML=list.length?list.map(function(p){
+      return '<article class="card"><div class="thumb">'+(p.b?'<span class="badge">'+p.b+'</span>':'')+'<svg viewBox="0 0 200 140" role="img" aria-label="'+esc(p.n)+'">'+art[p.a]+'</svg></div>'+
+        '<div class="info"><h3>'+esc(p.n)+'</h3><p class="spec">'+esc(p.s)+'</p><p class="price"><small>From </small>\u20B9'+p.p+'</p>'+
+        '<div class="actions"><a class="pbtn pbtn-primary" href="#contact">Get Quote</a><a class="pbtn pbtn-ghost" href="#products">Details</a></div></div></article>';
+    }).join(''):'<p class="empty">No products match your search. Try another word, like tank or exchanger.</p>';
+  }
+  tabs.addEventListener('click',function(e){var b=e.target.closest('.tab');if(b){cat=b.dataset.c;render()}});
+  if(box)box.addEventListener('input',function(){q=box.value.trim().toLowerCase();render()});
+  render();
 })();
 </script>
 </body>
