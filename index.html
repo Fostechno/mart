@@ -137,6 +137,21 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
 .rtext{font-size:.92rem;line-height:1.55;color:var(--text)}
 @media (prefers-reduced-motion:reduce){.marquee{overflow-x:auto}.mtrack{animation:none!important}}
 @media (max-width:640px){.review{width:280px}}
+.footer{background:#14213d;color:#cdd5e3;font-size:.92rem}
+.f-inner{max-width:1200px;margin:0 auto;padding:56px 24px 40px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.4fr;gap:40px}
+.f-brand{font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:12px}
+.footer p{line-height:1.65}
+.footer h3{color:#fff;font-size:1rem;font-weight:600;margin-bottom:16px}
+.footer ul{list-style:none;padding:0;display:grid;gap:10px}
+.footer a{color:#cdd5e3;text-decoration:none}
+.footer a:hover{color:#fff;text-decoration:underline}
+.footer a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.f-contact li{display:grid;gap:2px}
+.f-contact span{color:#8fa0bd;font-size:.8rem}
+.f-bottom{border-top:1px solid rgba(255,255,255,.14)}
+.f-bottom p{max-width:1200px;margin:0 auto;padding:18px 24px;font-size:.85rem;color:#8fa0bd}
+@media (max-width:900px){.f-inner{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.f-inner{grid-template-columns:1fr;gap:32px;padding:44px 20px 32px}}
 </style>
 </head>
 <body>
@@ -244,6 +259,46 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;backgro
   document.getElementById('row2').innerHTML=cards(B);
 })();
 </script>
+
+<footer class="footer" id="contact">
+  <div class="f-inner">
+    <div id="about">
+      <div class="f-brand">fostechnomart</div>
+      <p>We design and manufacture heat exchangers, tanks, pressure vessels, reactors and columns for industry. Built to your drawing, delivered on time.</p>
+    </div>
+    <nav aria-label="Quick links">
+      <h3>Quick links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#about">About us</a></li>
+        <li><a href="#reviews">Customer reviews</a></li>
+        <li><a href="#contact">Contact us</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Product categories">
+      <h3>Products</h3>
+      <ul>
+        <li><a href="#products">Heat exchangers</a></li>
+        <li><a href="#products">Storage tanks</a></li>
+        <li><a href="#products">Pressure vessels</a></li>
+        <li><a href="#products">Reactor vessels</a></li>
+        <li><a href="#products">Distillation columns</a></li>
+      </ul>
+    </nav>
+    <div>
+      <h3>Contact us</h3>
+      <ul class="f-contact">
+        <li><span>Address</span>Your factory address, city, state, PIN</li>
+        <li><span>Phone</span><a href="tel:+910000000000">+91 00000 00000</a></li>
+        <li><span>Email</span><a href="mailto:info@example.com">info@example.com</a></li>
+        <li><span>Working hours</span>Mon to Sat, 9:00 AM to 6:00 PM</li>
+      </ul>
+    </div>
+  </div>
+  <div class="f-bottom"><p>&copy; <span id="yr">2026</span> fostechnomart. All rights reserved.</p></div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
 <script>
 (function(){
   var track=document.getElementById('track'),dotsEl=document.getElementById('dots'),hero=document.querySelector('.hero');
